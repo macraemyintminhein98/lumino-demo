@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumino AI Studios — Myanmar's Premier AI Platform</title>
+  <meta name="description" content="Myanmar's first premium AI tools platform. Write, translate, create — powered by the world's most advanced AI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Noto+Sans+Myanmar:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --navy: #0A0E1A;
+      --navy-mid: #111827;
+      --navy-card: #131929;
+      --navy-border: rgba(201,168,76,0.18);
+      --white: #F5F0E8;
+      --white-dim: rgba(245,240,232,0.55);
+      --white-faint: rgba(245,240,232,0.1);
+      --red: #E05252;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor.hover { width: 36px; height: 36px; background: var(--gold-light); }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.08s ease;
+      opacity: 0.5;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.35;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid transparent;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10,14,26,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom-color: var(--navy-border);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 32px; height: 32px;
+      position: relative;
+    }
+    .logo-mark svg { width: 100%; height: 100%; }
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--white);
+    }
+    .logo-text span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      padding: 9px 22px;
+      border: 1px solid var(--gold);
+      color: var(--gold) !important;
+      font-size: 0.65rem !important;
+      letter-spacing: 0.15em !important;
+      transition: all 0.25s !important;
+    }
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--navy) !important;
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Radial glow behind hero */
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Animated gold orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.12;
+      animation: orb-float 12s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--gold); top: -100px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: #4A6CF7; bottom: -50px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 200px; height: 200px; background: var(--gold-light); top: 30%; right: 10%; animation-delay: -8s; }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0,0); }
+      33% { transform: translate(30px, -30px); }
+      66% { transform: translate(-20px, 20px); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 18px;
+      border: 1px solid var(--navy-border);
+      background: rgba(201,168,76,0.06);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fade-up 0.8s ease 0.2s forwards;
+    }
+    .eyebrow-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 12px;
+      opacity: 0;
+      animation: fade-up 0.9s ease 0.4s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-myanmar {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      color: var(--white-dim);
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fade-up 0.9s ease 0.5s forwards;
+    }
+
+    .hero-sub {
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: var(--white-dim);
+      max-width: 520px;
+      letter-spacing: 0.04em;
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fade-up 0.9s ease 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.9s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      padding: 15px 36px;
+      background: var(--gold);
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-light);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .btn-primary:hover::after { opacity: 0.3; }
+
+    .btn-secondary {
+      padding: 15px 36px;
+      border: 1px solid var(--navy-border);
+      color: var(--white-dim);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SCROLL INDICATOR */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fade-up 1s ease 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    .scroll-text { font-size: 0.55rem; letter-spacing: 0.25em; color: var(--white-dim); text-transform: uppercase; }
+    @keyframes scroll-pulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.6; }
+      50% { transform: scaleY(0.5); opacity: 1; }
+    }
+
+    /* SECTION SHARED */
+    section { padding: 120px 24px; position: relative; }
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-body {
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: var(--white-dim);
+      max-width: 560px;
+      letter-spacing: 0.03em;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* STATS STRIP */
+    #stats {
+      padding: 0;
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
+      background: var(--navy-card);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .stat-item {
+      padding: 40px 32px;
+      border-right: 1px solid var(--navy-border);
+      text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      display: block;
+    }
+    .stat-label { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--white-dim); text-transform: uppercase; margin-top: 6px; display: block; }
+
+    /* TOOLS */
+    #tools { background: var(--navy-mid); }
+    .tools-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+      margin-bottom: 72px;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--navy-border);
+      border: 1px solid var(--navy-border);
+    }
+    .tool-card {
+      background: var(--navy-mid);
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tool-card:hover { background: var(--navy-card); }
+    .tool-card:hover::before { opacity: 1; }
+    .tool-icon {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .tool-num {
+      position: absolute;
+      top: 32px; right: 32px;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    .tool-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .tool-myanmar {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 0.8rem;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 14px;
+    }
+    .tool-desc {
+      font-size: 0.72rem;
+      line-height: 1.7;
+      color: var(--white-dim);
+    }
+    .tool-credits {
+      margin-top: 20px;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tool-credits::before { content: '◆'; font-size: 0.4rem; }
+
+    /* PRICING */
+    #pricing { background: var(--navy); }
+    .pricing-header { text-align: center; margin-bottom: 72px; }
+    .pricing-header .section-label { justify-content: center; }
+    .pricing-header .section-label::before { display: none; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--navy-border);
+      border: 1px solid var(--navy-border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .pricing-card {
+      background: var(--navy-card);
+      padding: 48px 36px;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .pricing-card.featured {
+      background: rgba(201,168,76,0.06);
+    }
+    .plan-badge {
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .plan-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 6px;
+    }
+    .plan-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .plan-period {
+      font-size: 0.6rem;
+      color: var(--white-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .plan-features li {
+      font-size: 0.72rem;
+      color: var(--white-dim);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--white-faint);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.03em;
+    }
+    .plan-features li::before { content: '→'; color: var(--gold); font-size: 0.65rem; flex-shrink: 0; }
+    .plan-features li.unavailable { opacity: 0.3; }
+    .plan-features li.unavailable::before { content: '—'; }
+
+    .btn-plan {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.25s;
+    }
+    .btn-plan-outline {
+      border: 1px solid var(--navy-border);
+      color: var(--white-dim);
+    }
+    .btn-plan-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-plan-filled {
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 500;
+    }
+    .btn-plan-filled:hover { background: var(--gold-light); }
+
+    /* PAYMENT */
+    #payment { background: var(--navy-mid); }
+    .payment-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .payment-badges {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .pay-badge {
+      padding: 12px 22px;
+      border: 1px solid var(--navy-border);
+      background: var(--navy-card);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--white-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pay-badge .dot { width: 8px; height: 8px; background: #4CAF50; border-radius: 50%; }
+
+    .payment-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 24px;
+      background: var(--navy-card);
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .flow-step:hover { border-left-color: var(--gold); }
+    .step-num {
+      width: 28px; height: 28px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-size: 0.75rem; margin-bottom: 4px; letter-spacing: 0.06em; }
+    .step-desc { font-size: 0.65rem; color: var(--white-dim); line-height: 1.6; }
+
+    /* TEAM */
+    #team { background: var(--navy); }
+    .team-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .team-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .team-card {
+      background: var(--navy-card);
+      padding: 28px 28px;
+      border-left: 2px solid var(--navy-border);
+      transition: border-color 0.3s;
+    }
+    .team-card:hover { border-left-color: var(--gold); }
+    .team-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .team-role {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .team-desc { font-size: 0.7rem; line-height: 1.7; color: var(--white-dim); }
+
+    /* MARKETS */
+    .markets-strip {
+      margin-top: 64px;
+      padding-top: 48px;
+      border-top: 1px solid var(--navy-border);
+    }
+    .markets-label { font-size: 0.6rem; letter-spacing: 0.25em; color: var(--white-dim); text-transform: uppercase; margin-bottom: 24px; }
+    .markets-list {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .market-tag {
+      padding: 8px 16px;
+      border: 1px solid var(--navy-border);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--white-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .market-tag.active { border-color: var(--gold); color: var(--gold); }
+    .market-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* CTA */
+    #cta {
+      background: var(--navy-card);
+      text-align: center;
+      border-top: 1px solid var(--navy-border);
+      border-bottom: 1px solid var(--navy-border);
+    }
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+    .cta-title em { font-style: italic; color: var(--gold); }
+    .cta-sub { font-size: 0.75rem; color: var(--white-dim); letter-spacing: 0.06em; margin-bottom: 48px; }
+
+    /* FOOTER */
+    footer {
+      padding: 48px 24px;
+      border-top: 1px solid var(--navy-border);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-copy { font-size: 0.62rem; color: var(--white-dim); letter-spacing: 0.1em; }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer-links a { font-size: 0.62rem; color: var(--white-dim); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* SCROLL ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      #hero { padding: 100px 20px 80px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .tools-header { grid-template-columns: 1fr; gap: 24px; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+      .payment-inner { grid-template-columns: 1fr; gap: 48px; }
+      .team-inner { grid-template-columns: 1fr; gap: 48px; }
+      footer .footer-inner { flex-direction: column; align-items: flex-start; }
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .tools-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="16,2 30,26 2,26" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+          <polygon points="16,8 25,24 7,24" fill="rgba(201,168,76,0.12)"/>
+          <circle cx="16" cy="14" r="2" fill="#C9A84C"/>
+        </svg>
+      </div>
+      <span class="logo-text">LUMINO <span>AI</span> STUDIOS</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#payment">Payment</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#cta" class="nav-cta">Get Early Access</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-eyebrow">
+      <span class="eyebrow-dot"></span>
+      Myanmar's First Premium AI Platform — Launching June 2026
+    </div>
+    <h1 class="hero-title">
+      Illuminate Your<br /><em>Creative Work</em>
+    </h1>
+    <p class="hero-myanmar">မြန်မာ့ပထမဆုံး AI ကျွမ်းကျင်သူပလက်ဖောင်း</p>
+    <p class="hero-sub">
+      World-class AI tools built for Myanmar creators, entrepreneurs, and businesses.
+      Write, translate, and create — in Burmese and English.
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Get Early Access</a>
+      <a href="#tools" class="btn-secondary">Explore Tools →</a>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span class="scroll-text">Scroll</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-number">7+</span>
+        <span class="stat-label">AI Tools</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Languages</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number">19K</span>
+        <span class="stat-label">MMK / Month Basic</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Markets</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section id="tools">
+    <div class="container">
+      <div class="tools-header">
+        <div>
+          <div class="section-label">Tools Suite</div>
+          <h2 class="section-title">Seven Tools.<br /><em>One Platform.</em></h2>
+        </div>
+        <p class="section-body">
+          Every tool is powered by Claude — the world's most capable AI — fine-tuned for Myanmar language, culture, and business context.
+        </p>
+      </div>
+      <div class="tools-grid">
+
+        <div class="tool-card reveal">
+          <span class="tool-num">01</span>
+          <span class="tool-icon">✍️</span>
+          <div class="tool-name">AI Writer</div>
+          <div class="tool-myanmar">AI စာရေးသူ</div>
+          <p class="tool-desc">Blog posts, articles, social copy, and long-form content. Writes naturally in Burmese or English — your voice, AI-powered.</p>
+          <div class="tool-credits">3 credits per generation</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">02</span>
+          <span class="tool-icon">🌐</span>
+          <div class="tool-name">Translator</div>
+          <div class="tool-myanmar">ဘာသာပြန်ဆိုသူ</div>
+          <p class="tool-desc">Accurate Myanmar ↔ English translation with cultural nuance. Not just words — meaning. Built for real business communication.</p>
+          <div class="tool-credits">2 credits per page</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">03</span>
+          <span class="tool-icon">📋</span>
+          <div class="tool-name">Business Planner</div>
+          <div class="tool-myanmar">စီးပွားရေးအစီအမံ</div>
+          <p class="tool-desc">Full business plans, executive summaries, and financial outlines. Turn your idea into a fundable, structured proposal.</p>
+          <div class="tool-credits">8 credits per plan</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">04</span>
+          <span class="tool-icon">📱</span>
+          <div class="tool-name">Social Creator</div>
+          <div class="tool-myanmar">Social Post ဖန်တီးသူ</div>
+          <p class="tool-desc">Facebook, Instagram, TikTok captions. Optimized for Myanmar audience engagement — with the right tone and hashtags.</p>
+          <div class="tool-credits">2 credits per post</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">05</span>
+          <span class="tool-icon">📧</span>
+          <div class="tool-name">Email Writer</div>
+          <div class="tool-myanmar">Email ရေးသားသူ</div>
+          <p class="tool-desc">Professional emails in seconds. Sales outreach, client follow-ups, proposals — formal or casual, Burmese or English.</p>
+          <div class="tool-credits">2 credits per email</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">06</span>
+          <span class="tool-icon">🛍️</span>
+          <div class="tool-name">Product Writer</div>
+          <div class="tool-myanmar">ကုန်ပစ္စည်းဖော်ပြချက်</div>
+          <p class="tool-desc">Product descriptions that sell. E-commerce listings, catalog copy, and packaging text — in both languages.</p>
+          <div class="tool-credits">2 credits per product</div>
+        </div>
+
+        <div class="tool-card reveal">
+          <span class="tool-num">07</span>
+          <span class="tool-icon">💬</span>
+          <div class="tool-name">AI Assistant</div>
+          <div class="tool-myanmar">AI အကူအညီပေးသူ</div>
+          <p class="tool-desc">Your always-on AI partner. Research, brainstorm, answer questions, draft anything — full chat interface in Burmese.</p>
+          <div class="tool-credits">1 credit per message</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Simple. <em>Transparent.</em></h2>
+        <p class="section-body" style="margin: 0 auto; text-align: center;">Affordable for every Myanmar creator and business. No hidden fees — pay once, create freely.</p>
+      </div>
+
+      <div class="pricing-grid">
+
+        <div class="pricing-card reveal">
+          <span class="plan-badge">Entry</span>
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">19,000</div>
+          <div class="plan-period">MMK / month · ~$9 USD</div>
+          <ul class="plan-features">
+            <li>100 credits / month</li>
+            <li>All 7 AI tools</li>
+            <li>Burmese + English</li>
+            <li class="unavailable">Priority processing</li>
+            <li class="unavailable">Community access</li>
+            <li class="unavailable">Early features</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Get Basic</a>
+        </div>
+
+        <div class="pricing-card featured reveal">
+          <span class="plan-badge">★ Most Popular</span>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">39,000</div>
+          <div class="plan-period">MMK / month · ~$19 USD</div>
+          <ul class="plan-features">
+            <li>300 credits / month</li>
+            <li>All 7 AI tools</li>
+            <li>Burmese + English</li>
+            <li>Priority processing</li>
+            <li>Community access</li>
+            <li class="unavailable">Early features</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-filled">Get Pro</a>
+        </div>
+
+        <div class="pricing-card reveal">
+          <span class="plan-badge">Unlimited</span>
+          <div class="plan-name">Max</div>
+          <div class="plan-price">49,000</div>
+          <div class="plan-period">MMK / month · ~$24 USD</div>
+          <ul class="plan-features">
+            <li>500 credits / month</li>
+            <li>All 7 AI tools</li>
+            <li>Burmese + English</li>
+            <li>Priority processing</li>
+            <li>Community access</li>
+            <li>Early features</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Get Max</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section id="payment">
+    <div class="container">
+      <div class="payment-inner">
+        <div>
+          <div class="section-label">Payments</div>
+          <h2 class="section-title">Pay the<br /><em>Myanmar Way</em></h2>
+          <p class="section-body">
+            No international credit cards required. Pay instantly with Wave Pay or KBZ Pay — the wallets already on your phone.
+          </p>
+          <div class="payment-badges">
+            <div class="pay-badge"><span class="dot"></span> Wave Pay</div>
+            <div class="pay-badge"><span class="dot"></span> KBZ Pay</div>
+            <div class="pay-badge"><span class="dot"></span> GCash (PH)</div>
+            <div class="pay-badge"><span class="dot"></span> bKash (BD)</div>
+          </div>
+        </div>
+
+        <div class="payment-flow">
+          <div class="flow-step reveal">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <div class="step-title">Choose your plan</div>
+              <div class="step-desc">Select Basic, Pro, or Max. No account required yet.</div>
+            </div>
+          </div>
+          <div class="flow-step reveal">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <div class="step-title">Send payment via Wave Pay or KPay</div>
+              <div class="step-desc">Transfer to our verified merchant number. Takes 30 seconds.</div>
+            </div>
+          </div>
+          <div class="flow-step reveal">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <div class="step-title">Send screenshot to Telegram</div>
+              <div class="step-desc">Forward your payment screenshot to our bot at @LuminoBot.</div>
+            </div>
+          </div>
+          <div class="flow-step reveal">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <div class="step-title">Account activated within 1 hour</div>
+              <div class="step-desc">Credits added instantly after verification. Start creating.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="container">
+      <div class="team-inner">
+        <div>
+          <div class="section-label">Built in Myanmar</div>
+          <h2 class="section-title">Local Team.<br /><em>Global Tech.</em></h2>
+          <p class="section-body">
+            We're a Yangon-based team combining deep AI expertise with Myanmar market knowledge. We're not importing a foreign product — we're building for our people, by our people.
+          </p>
+
+          <div class="markets-strip">
+            <p class="markets-label">Expansion Roadmap</p>
+            <div class="markets-list">
+              <div class="market-tag active"><span class="market-dot"></span> Myanmar — June 2026</div>
+              <div class="market-tag"><span class="market-dot"></span> Philippines — Sept 2026</div>
+              <div class="market-tag"><span class="market-dot"></span> Bangladesh — Nov 2026</div>
+              <div class="market-tag"><span class="market-dot"></span> India — 2027</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-cards">
+          <div class="team-card reveal">
+            <div class="team-name">Macrae Myint</div>
+            <div class="team-role">Founder · AI Systems Architect</div>
+            <p class="team-desc">12+ years in design and software. Built Alfred (autonomous forex AI), MAVEN (multi-agent system), and multiple SaaS products. Based between Yangon and Southeast Asia.</p>
+          </div>
+          <div class="team-card reveal">
+            <div class="team-name">Khant</div>
+            <div class="team-role">Yangon Liaison · AI Specialist</div>
+            <p class="team-desc">Returning to Yangon in 2026. On-the-ground team lead responsible for merchant relationships, user onboarding, and local operations.</p>
+          </div>
+          <div class="team-card reveal">
+            <div class="team-name">ML Researcher</div>
+            <div class="team-role">Machine Learning · Myanmar NLP</div>
+            <p class="team-desc">Specializing in Myanmar language AI, ensuring our models understand cultural context, local idioms, and business terminology.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <h2 class="cta-title reveal">
+        Ready to <em>Illuminate</em><br />Your Work?
+      </h2>
+      <p class="cta-sub reveal">Early access opens June 2026. Join the waitlist — first 100 users get 50% off forever.</p>
+      <div class="hero-actions reveal">
+        <a href="https://t.me/luminoaistudios" target="_blank" rel="noopener" class="btn-primary">Join Waitlist on Telegram</a>
+        <a href="https://instagram.com/luminoaistudios" target="_blank" rel="noopener" class="btn-secondary">Follow on Instagram →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 Lumino AI Studios · Aleph Development · luminoaistudiosmm.com</span>
+      <ul class="footer-links">
+        <li><a href="https://t.me/luminoaistudios" target="_blank" rel="noopener">Telegram</a></li>
+        <li><a href="https://instagram.com/luminoaistudios" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://tiktok.com/@luminoaistudios" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animateCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('a, button, .tool-card, .pricing-card, .flow-step').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // NAV SCROLL
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // REVEAL ON SCROLL
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // STAGGER reveal children in grids
+    document.querySelectorAll('.tools-grid, .pricing-grid, .stats-grid').forEach(grid => {
+      grid.querySelectorAll('.reveal').forEach((el, i) => {
+        el.style.transitionDelay = (i * 0.08) + 's';
+      });
+    });
+  </script>
+</body>
+</html>
